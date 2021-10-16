@@ -16,6 +16,7 @@ module "eks_cluster"{
   no_of_node   = "${var.no_of_node}"
 } 
 
+/*
 # aws aurora provisioning
 module "rds_aurora"{
 
@@ -24,3 +25,4 @@ module "rds_aurora"{
 module "elasticache_cluster"{
 
 }
+*/
