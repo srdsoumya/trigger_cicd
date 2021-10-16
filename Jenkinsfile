@@ -42,8 +42,8 @@ pipeline {
 						env.AWS_DEFAULT_REGION = 'us-east-1'
 					}
 					ansiColor('xterm') {
-						sh 'terraform plan -out tfplan '
-						sh 'terraform show -no-color tfplan > tfplan.txt'
+						sh 'terraform plan'
+						sh 'terraform show'
 					}
 				}
 			}	
