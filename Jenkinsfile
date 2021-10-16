@@ -80,7 +80,7 @@ try {
               env.AWS_DEFAULT_REGION = 'us-east-1'
           }
           ansiColor('xterm') {
-            sh 'terraform plan'
+            sh 'terraform show'
           }
       }
     }
