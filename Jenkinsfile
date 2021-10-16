@@ -1,5 +1,8 @@
 pipeline {
 	agent any
+	environment { 
+        YOUR_CRED = credentials('test/acm/info') 
+    }
 	stages {
 		stage('Init') {
 			steps {
