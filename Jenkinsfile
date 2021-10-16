@@ -6,7 +6,7 @@ pipeline {
 	stages {
 		stage('Init') {
 			steps {
-				sh 'terraform init -no-color'
+				sh 'aws sts get-caller-identity'
 			}
 		}
 		stage('Plan') {
