@@ -8,19 +8,24 @@ variable "cluster_version" {
 	default = "1.19"
 }
 
-variable "cluster_vpc_id" {
+variable "tag_name"{
 	type = string
 	description = "note: vpc must be available as defined"
 }
 
-variable "master_node_subnet" {
+variable "vpc_id" {
+	type = string
+	description = "note: vpc must be available as defined"
+}
+
+variable "subnet_ids" {
 	type = list
 	description = "Note: subnet must available in defined vpc and must be private"
 }
 
-variable "worker_node_subnet" {
-	type = list
-	description = "Note: subnet must available in defined vpc"
+variable "no_of_node" {
+	type = number
+	description = "Note: priority to pass as per node"
 }
 
 variable "instance_types" {
@@ -41,15 +46,6 @@ variable "ami_type" {
 	description = ""
 }
 
-variable "worker_node_scaling" {
-	type = object({
-		desired_size    = number
-		min_size		= number
-		max_size 		= number
-  })
-	description = "Note: priority to pass as per node"
-}
-
 variable "work_node_gp_name"{
 	type = string
 	default = "node_group1"
@@ -63,11 +59,6 @@ variable "master_node_policy" {
 variable "worker_node_policy" {
 	type = list
 	default = ["AmazonEKSWorkerNodePolicy","AmazonEKS_CNI_Policy","AmazonEC2ContainerRegistryReadOnly"]
-}
-
-variable "cluster_bound_param_traffic" {
-	type = list
-	default = ["from_port", "to_port", "protocol", "cidr_blocks"]
 }
 
 variable "sg_ingress" {

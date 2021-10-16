@@ -1,23 +1,23 @@
 variable "mots_id" {
-	default = "10101100101011"
+	default = "infy_mots_id"
 }
 
 variable "owned_by" {
-	default = "dcp"
+	default = "infy_owned_by"
 }
 
 variable "cluster_name" {
-	default = "skava-non-prod"
+	default = "infy_cluster_name"
 }
 
 variable "vpc_id" {
-	default = "vpc-0d066b274bd6c05a3"
+	default = "infy_vpc_id"
 }
 
 variable "subnet_ids" {
-	default = ["subnet-09cc53a07375ef0fc","subnet-09b7a28d8e15b9684","subnet-0fcabe6f1b0ded6cc","subnet-0a769de4abf41a046"]
+	default = infy_subnet_ids
 }
 
 variable "no_of_node" {
-	default = 1
+	default = infy_no_of_node
 }

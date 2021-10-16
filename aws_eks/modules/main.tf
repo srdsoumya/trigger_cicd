@@ -15,7 +15,7 @@ resource "aws_iam_role_policy_attachment" "eks-cluster-AmazonEKSpolicy" {
 # Security group for network traffic to and from AWS EKS Cluster.
 resource "aws_security_group" "cluster_sg_mgmt" {
   name        = "${var.cluster_name}-sg"
-  vpc_id      = "${var.cluster_vpc_id}" 
+  vpc_id      = "${var.vpc_id}" 
 
   # Egress allows Outbound traffic from the EKS cluster to the  Internet 
                              # Outbound Rule
@@ -28,20 +28,20 @@ resource "aws_security_group" "cluster_sg_mgmt" {
 
 
 # Creating the EKS cluster
-
 resource "aws_eks_cluster" "eks_cluster" {
   name     = "${var.cluster_name}"
   role_arn = "${aws_iam_role.iam-role-eks-cluster.arn}"
   version  = "${var.cluster_version}"
 
 # Adding VPC Configuration
-
   vpc_config {             # Configure EKS with vpc and network settings 
    security_group_ids = ["${aws_security_group.cluster_sg_mgmt.id}"]
-   subnet_ids         = var.master_node_subnet
+   subnet_ids         = var.subnet_ids
   }
 
-
+  tags = {
+    Name              = "${var.tag_name}"
+  }
 
   #Explicit dependencies are static references
   depends_on = [
@@ -51,7 +51,6 @@ resource "aws_eks_cluster" "eks_cluster" {
 }
 
 # Creating IAM role for EKS nodes to work with other AWS Services. 
-
 resource "aws_iam_role" "eks_nodes" {
   name               = "${var.cluster_name}-node-group-iam-role"
   assume_role_policy = file("${path.module}/ec2_assume_role_policy.json")
@@ -61,7 +60,6 @@ resource "aws_iam_role" "eks_nodes" {
 
 
 # Attaching the different Policies to Node Members.
-
 resource "aws_iam_role_policy_attachment" "AmazonEKSWorkerNodePolicy" {
   count      = length("${var.worker_node_policy}")
   policy_arn = "arn:aws:iam::aws:policy/${element(var.worker_node_policy, count.index)}"
@@ -69,20 +67,19 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSWorkerNodePolicy" {
 }
 
 # Create EKS cluster node group
-
 resource "aws_eks_node_group" "node" {
   cluster_name    = "${aws_eks_cluster.eks_cluster.name}"
   node_group_name = "${var.work_node_gp_name}"
   node_role_arn   = "${aws_iam_role.eks_nodes.arn}"
-  subnet_ids      = "${var.worker_node_subnet}"
+  subnet_ids      = "${var.subnet_ids}"
   ami_type        = "${var.ami_type}"
   instance_types  = "${var.instance_types}"
   disk_size       = "${var.disk_size}"
 
   scaling_config {
-    desired_size = "${var.worker_node_scaling.desired_size}"
-    max_size     = "${var.worker_node_scaling.max_size}"
-    min_size     = "${var.worker_node_scaling.min_size}"
+    desired_size = "${var.no_of_node}"
+    max_size     = "${var.no_of_node}"
+    min_size     = "${var.no_of_node}"
   }
 
   #Explicit dependencies are static references
