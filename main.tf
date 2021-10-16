@@ -13,7 +13,7 @@ module "eks_cluster"{
   cluster_name = "${var.cluster_name}"
   vpc_id       = "${var.vpc_id}"
   subnet_ids   = "${var.subnet_ids}"
-  no_of_node   = "${var.WORKER_NODE_SCALING}"
+  no_of_node   = "${var.no_of_node}"
 } 
 
 # aws aurora provisioning
