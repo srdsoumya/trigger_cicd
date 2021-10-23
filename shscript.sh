@@ -1,1 +1,1 @@
-./myscrpit.sh hello world
+./aws_s3/myscrpit.sh hello world
