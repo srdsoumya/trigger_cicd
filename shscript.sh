@@ -1,1 +1,1 @@
-./myscrpit.sh
+./myscrpit.sh hello world
